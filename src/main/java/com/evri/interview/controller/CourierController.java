@@ -21,7 +21,7 @@ public class CourierController {
         return ResponseEntity.ok(courierService.getCouriers(isActive));
     }
 
-    @PutMapping("/{courierId}")
+    @PutMapping("/couriers/{courierId}")
     public ResponseEntity<Courier> updateCourier(@PathVariable Long courierId, @RequestBody Courier updatedCourier) {
         if (!Objects.equals(courierId, updatedCourier.getId())) {
             throw new IllegalStateException("Invalid courier id");

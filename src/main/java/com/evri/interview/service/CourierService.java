@@ -43,6 +43,4 @@ public class CourierService {
                 })
                 .orElseThrow(() -> new CourierNotFoundException("Courier not found with id " + courierId));
     }
-
-
 }
