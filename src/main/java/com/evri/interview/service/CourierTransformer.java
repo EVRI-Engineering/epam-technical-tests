@@ -4,6 +4,7 @@ import com.evri.interview.model.Courier;
 import com.evri.interview.repository.CourierEntity;
 import org.springframework.stereotype.Component;
 
+//MapStruct could be used
 @Component
 public class CourierTransformer {
 
@@ -14,5 +15,4 @@ public class CourierTransformer {
                 .active(entity.isActive())
                 .build();
     }
-
 }
