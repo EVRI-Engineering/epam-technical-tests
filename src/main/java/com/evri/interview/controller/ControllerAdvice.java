@@ -15,12 +15,14 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = ResourceNotFoundException.class)
     String handleResourceNotFound(ResourceNotFoundException exception) {
+        log.warn("ResourceNotFoundException exception has been thrown", exception);
         return exception.getMessage();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalArgumentException.class)
     String handleBadRequest(IllegalArgumentException exception) {
+        log.warn("IllegalArgumentException exception has been thrown", exception);
         return exception.getMessage();
     }
 }

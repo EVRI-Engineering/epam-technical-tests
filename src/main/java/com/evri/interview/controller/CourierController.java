@@ -34,8 +34,9 @@ public class CourierController {
     @PutMapping("/{courierId}")
     public ResponseEntity<Void> updateCourier(@PathVariable final long courierId,
                                               @RequestBody final Courier courierRequest) {
-
+        log.info("Before updateCourier method call. CourierId: {}", courierId);
         courierService.updateCourier(courierId, courierRequest);
+        log.info("After updateCourier method call. CourierId: {}", courierId);
         return ResponseEntity.noContent().build();
     }
 }
