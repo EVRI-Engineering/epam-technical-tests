@@ -15,4 +15,14 @@ public class CourierTransformer {
                 .build();
     }
 
+    public CourierEntity toCourierEntity(Courier courier) {
+        if (courier.getName().split(" ").length != 2) throw new IllegalStateException("Name has been entered wrong");
+        return CourierEntity.builder()
+                .id(courier.getId())
+                .firstName(courier.getName().split(" ")[0])
+                .lastName(courier.getName().split(" ")[1])
+                .active(courier.isActive())
+                .build();
+    }
+
 }
