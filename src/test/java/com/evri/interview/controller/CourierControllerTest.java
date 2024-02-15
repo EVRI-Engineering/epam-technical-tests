@@ -95,7 +95,8 @@ class CourierControllerTest {
 
     @Test
     @SneakyThrows
-    void updateCourierWhenCourierDoesNotExist_shouldNotUpdate() {
+    @DisplayName("Update courier when courier does not exist")
+    void updateCourierWhenCourierDoesNotExist_shouldNotUpdateTest() {
         Courier courier = DataProvider.getCouriers().get(0);
         courier.setId(3);
         courier.setName("UpdatedFirstName UpdatedLastName");
