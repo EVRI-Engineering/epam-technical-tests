@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-    //Here could be error message on response
+    //Here could be some structured error dto with message and error code.
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = ResourceNotFoundException.class)
     String handleResourceNotFound(ResourceNotFoundException exception) {
