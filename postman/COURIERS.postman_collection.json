@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "00985efe-c81b-414e-bcd5-e7ef107afde5",
+		"name": "COURIERS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1660821"
+	},
+	"item": [
+		{
+			"name": "Get couriers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{couriers_host}}/api/couriers",
+					"host": [
+						"{{couriers_host}}"
+					],
+					"path": [
+						"api",
+						"couriers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update courier",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\" : \"Bob\",\n    \"lastName\" : \"Smith\",\n    \"active\" : false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{couriers_host}}/api/couriers/{{courierId}}",
+					"host": [
+						"{{couriers_host}}"
+					],
+					"path": [
+						"api",
+						"couriers",
+						"{{courierId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
