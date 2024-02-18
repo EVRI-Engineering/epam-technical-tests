@@ -26,6 +26,16 @@ public class CourierService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * This method performs a transactional update operation on the courier 
+     * identified by the specified courier ID. 
+     * The provided {@code courier RequestBody} contains the updated information
+     * for the courier.
+     * 
+     * @param courierId The unique identifier of the courier.
+     * @param courierRequestBody contains the updated information for the courier.
+     * @return The {@link Courier} object after an update.
+     */
     @Transactional
     public Courier updateCourierById(long courierId, CourierRequestBody courierRequestBody) {
         return courierTransformer.toCourier(
