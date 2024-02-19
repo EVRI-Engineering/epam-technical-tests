@@ -28,27 +28,24 @@ public class CourierController {
 
     @GetMapping("/couriers")
     public ResponseEntity<List<Courier>> getAllCouriers(
-        @RequestParam(name = "isActive", defaultValue = "false") boolean isActive
+            @RequestParam(name = "isActive", defaultValue = "false") boolean isActive
     ) {
         return ResponseEntity.ok(courierService.getAllCouriers(isActive));
     }
 
     /**
-     * Updates a courier's information by their ID.
-     * 
-     * This endpoint allows clients to update the information of a courier identified
-     * by the specified courier ID.
+     * This endpoint allows to update courier personal information by courier ID.
      * 
      * @param courierId The unique identifier of the courier.
-     * @param courierRequestBody contains the updated information for the courier.
+     * @param courierRequestBody Contains the updated information of the courier.
      * @return A ResponseEntity with the updated Courier object and an HTTP status code.
      *          Returns 200 (OK) if the update is successful.
      *          Returns 404 (Not Found) if the courier with the specified ID is not found.
      */
     @PutMapping("/couriers/{courierId}")
     public ResponseEntity<Courier> updateCourierById(
-        @PathVariable long courierId,
-        @RequestBody @Valid CourierRequestBody courierRequestBody
+            @PathVariable long courierId,
+            @RequestBody @Valid CourierRequestBody courierRequestBody
     ) {
         return ResponseEntity.ok(courierService.updateCourierById(courierId, courierRequestBody));
     }

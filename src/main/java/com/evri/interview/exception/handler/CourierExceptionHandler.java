@@ -18,12 +18,12 @@ public class CourierExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
-        ResourceNotFoundException resourceNotFoundException
+            ResourceNotFoundException resourceNotFoundException
     ) {
         log.warn("ResourceNotFoundException: {}", resourceNotFoundException.getMessage());
 
         return new ResponseEntity<>(
-            new ErrorResponse(resourceNotFoundException.getMessage()), HttpStatus.NOT_FOUND
+                new ErrorResponse(resourceNotFoundException.getMessage()), HttpStatus.NOT_FOUND
         );
     }
 }
