@@ -35,8 +35,8 @@ class CourierControllerTest {
     @Test
     void testGetAllCouriers() {
         List<Courier> mockCouriersList = Arrays.asList(
-            Courier.builder().build(),
-            Courier.builder().build()
+                Courier.builder().build(),
+                Courier.builder().build()
         );
 
         when(courierService.getAllCouriers(false)).thenReturn(mockCouriersList);
@@ -52,45 +52,45 @@ class CourierControllerTest {
     @Test
     void testUpdateCourierById_Success() {
         long courierIdForUpdate = 1L;
-        
+
         CourierRequestBody mockCourierRequestBody = CourierRequestBody.builder().build();
         Courier mockCourier = Courier.builder().build();
 
         when(courierService.updateCourierById(courierIdForUpdate, mockCourierRequestBody)).thenReturn(mockCourier);
 
         ResponseEntity<Courier> responseEntity = courierController.updateCourierById(
-            courierIdForUpdate, mockCourierRequestBody
+                courierIdForUpdate, mockCourierRequestBody
         );
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockCourier, responseEntity.getBody());
 
         verify(courierService, times(1))
-            .updateCourierById(courierIdForUpdate, mockCourierRequestBody);
+                .updateCourierById(courierIdForUpdate, mockCourierRequestBody);
     }
 
     @Test
-    void testUpdateCourierById_CourierNotFound() { 
+    void testUpdateCourierById_CourierNotFound() {
         long notExistCourierId = 1000L;
-        
+
         CourierRequestBody mockCourierRequestBody = CourierRequestBody.builder().build();
 
         when(courierService.updateCourierById(notExistCourierId, mockCourierRequestBody))
-            .thenThrow(
-                new ResourceNotFoundException(
-                    String.format("Not found courier with courierId: %s", notExistCourierId)
+                .thenThrow(
+                        new ResourceNotFoundException(
+                                String.format("Not found courier with courierId: %s", notExistCourierId)
+                        )
                 )
-            )
         ;
-        
+
         ResourceNotFoundException resourceNotFoundException = assertThrows(
-            ResourceNotFoundException.class,
-            () -> courierController.updateCourierById(notExistCourierId, mockCourierRequestBody)
+                ResourceNotFoundException.class,
+                () -> courierController.updateCourierById(notExistCourierId, mockCourierRequestBody)
         );
-            
+
         assertEquals(
-            String.format("Not found courier with courierId: %s", notExistCourierId),
-            resourceNotFoundException.getMessage()
+                String.format("Not found courier with courierId: %s", notExistCourierId),
+                resourceNotFoundException.getMessage()
         );
     }
 }
