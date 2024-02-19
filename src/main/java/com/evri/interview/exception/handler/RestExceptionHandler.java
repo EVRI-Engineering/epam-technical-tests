@@ -20,7 +20,7 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
         ResourceNotFoundException resourceNotFoundException
     ) {
-        log.info("ResourceNotFoundException: {}", resourceNotFoundException.getMessage());
+        log.warn("ResourceNotFoundException: {}", resourceNotFoundException.getMessage());
 
         return new ResponseEntity<>(
             new ErrorResponse(resourceNotFoundException.getMessage()), HttpStatus.NOT_FOUND

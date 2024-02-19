@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +46,7 @@ public class CourierController {
     @PutMapping("/couriers/{courierId}")
     public ResponseEntity<Courier> updateCourierById(
         @PathVariable long courierId,
-        @RequestBody CourierRequestBody courierRequestBody
+        @RequestBody @Valid CourierRequestBody courierRequestBody
     ) {
         return ResponseEntity.ok(courierService.updateCourierById(courierId, courierRequestBody));
     }
