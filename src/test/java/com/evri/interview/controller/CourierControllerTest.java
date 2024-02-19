@@ -1,6 +1,7 @@
 package com.evri.interview.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,14 +39,14 @@ class CourierControllerTest {
             Courier.builder().build()
         );
 
-        when(courierService.getAllCouriers()).thenReturn(mockCouriersList);
+        when(courierService.getAllCouriers(false)).thenReturn(mockCouriersList);
 
-        ResponseEntity<List<Courier>> responseEntity = courierController.getAllCouriers();
+        ResponseEntity<List<Courier>> responseEntity = courierController.getAllCouriers(false);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockCouriersList, responseEntity.getBody());
 
-        verify(courierService, times(1)).getAllCouriers();
+        verify(courierService, times(1)).getAllCouriers(false);
     }
 
     @Test

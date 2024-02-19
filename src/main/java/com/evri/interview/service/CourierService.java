@@ -2,6 +2,7 @@ package com.evri.interview.service;
 
 import com.evri.interview.exception.ResourceNotFoundException;
 import com.evri.interview.model.Courier;
+import com.evri.interview.repository.CourierEntity;
 import com.evri.interview.repository.CourierRepository;
 import com.evri.interview.request.CourierRequestBody;
 
@@ -19,11 +20,8 @@ public class CourierService {
     private CourierTransformer courierTransformer;
     private CourierRepository repository;
 
-    public List<Courier> getAllCouriers() {
-        return repository.findAll()
-                .stream()
-                .map(courierTransformer::toCourier)
-                .collect(Collectors.toList());
+    public List<Courier> getAllCouriers(boolean isActive) {
+        return (isActive) ? getAllActiveCouriers() : getAllCouriers();
     }
 
     /**
@@ -49,5 +47,21 @@ public class CourierService {
                 () -> new ResourceNotFoundException(String.format("Not found courier with courierId: %s", courierId))
             )
         );
+    }
+
+
+    private List<Courier> getAllCouriers() {
+        return repository.findAll()
+                .stream()
+                .map(courierTransformer::toCourier)
+                .collect(Collectors.toList());
+    }
+
+    private List<Courier> getAllActiveCouriers() {
+        return repository.findAll()
+                .stream()
+                .filter(CourierEntity::isActive)
+                .map(courierTransformer::toCourier)
+                .collect(Collectors.toList());
     }
 }
