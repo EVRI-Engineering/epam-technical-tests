@@ -21,47 +21,35 @@ public class CourierService {
     private CourierRepository repository;
 
     public List<Courier> getAllCouriers(boolean isActive) {
-        return (isActive) ? getAllActiveCouriers() : getAllCouriers();
+        List<CourierEntity> courierList = isActive ? repository.findAllByActiveTrue() : repository.findAll();
+
+        return courierList.stream()
+                .map(courierTransformer::toCourier)
+                .collect(Collectors.toList());
     }
 
     /**
-     * This method performs a transactional update operation on the courier 
-     * identified by the specified courier ID. 
+     * This method performs a transactional update operation on the courier
+     * identified by the specified courier ID.
      * The provided {@code courier RequestBody} contains the updated information
      * for the courier.
-     * 
-     * @param courierId The unique identifier of the courier.
+     *
+     * @param courierId          The unique identifier of the courier.
      * @param courierRequestBody contains the updated information for the courier.
      * @return The {@link Courier} object after an update.
      */
     @Transactional
     public Courier updateCourierById(long courierId, CourierRequestBody courierRequestBody) {
         return courierTransformer.toCourier(
-            repository.findById(courierId).map(courierEntit -> {
-                courierEntit.setFirstName(courierRequestBody.getFirstName());
-                courierEntit.setLastName(courierRequestBody.getLastName());
-                courierEntit.setActive(courierRequestBody.isActive());
+                repository.findById(courierId).map(courierEntity -> {
+                    courierEntity.setFirstName(courierRequestBody.getFirstName());
+                    courierEntity.setLastName(courierRequestBody.getLastName());
+                    courierEntity.setActive(courierRequestBody.isActive());
 
-                return repository.save(courierEntit);
-            }).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Not found courier with courierId: %s", courierId))
-            )
+                    return repository.save(courierEntity);
+                }).orElseThrow(
+                        () -> new ResourceNotFoundException(String.format("Not found courier with courierId: %s", courierId))
+                )
         );
-    }
-
-
-    private List<Courier> getAllCouriers() {
-        return repository.findAll()
-                .stream()
-                .map(courierTransformer::toCourier)
-                .collect(Collectors.toList());
-    }
-
-    private List<Courier> getAllActiveCouriers() {
-        return repository.findAll()
-                .stream()
-                .filter(CourierEntity::isActive)
-                .map(courierTransformer::toCourier)
-                .collect(Collectors.toList());
     }
 }
