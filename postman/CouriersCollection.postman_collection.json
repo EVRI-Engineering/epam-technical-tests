@@ -48,7 +48,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}/api/couriers",
+					"raw": "{{PROTOCOL}}://{{HOST}}:{{PORT}}/api/couriers?isActive=true",
 					"protocol": "{{PROTOCOL}}",
 					"host": [
 						"{{HOST}}"
@@ -57,6 +57,12 @@
 					"path": [
 						"api",
 						"couriers"
+					],
+					"query": [
+						{
+							"key": "isActive",
+							"value": "true"
+						}
 					]
 				}
 			},
