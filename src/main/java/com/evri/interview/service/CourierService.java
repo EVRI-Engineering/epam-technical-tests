@@ -1,24 +1,12 @@
 package com.evri.interview.service;
 
-import com.evri.interview.model.Courier;
-import com.evri.interview.repository.CourierRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.evri.interview.dto.CourierResponseDto;
+import com.evri.interview.dto.CourierUpdateDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-@AllArgsConstructor
-public class CourierService {
+public interface CourierService {
+    List<CourierResponseDto> getAllCouriers(boolean isActive);
 
-    private CourierTransformer courierTransformer;
-    private CourierRepository repository;
-
-    public List<Courier> getAllCouriers() {
-        return repository.findAll()
-                .stream()
-                .map(courierTransformer::toCourier)
-                .collect(Collectors.toList());
-    }
+    CourierResponseDto updateCourierById(long courierId, CourierUpdateDto courierUpdateDto);
 }
