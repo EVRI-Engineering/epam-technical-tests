@@ -1,7 +1,6 @@
 package com.evri.interview.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -66,7 +65,8 @@ class CourierControllerTest {
         assertEquals(mockCourier, responseEntity.getBody());
 
         verify(courierService, times(1))
-                .updateCourierById(courierIdForUpdate, mockCourierRequestBody);
+                .updateCourierById(courierIdForUpdate, mockCourierRequestBody
+        );
     }
 
     @Test
@@ -92,5 +92,7 @@ class CourierControllerTest {
                 String.format("Not found courier with courierId: %s", notExistCourierId),
                 resourceNotFoundException.getMessage()
         );
+
+        verify(courierService, times(1)).updateCourierById(notExistCourierId, mockCourierRequestBody);
     }
 }

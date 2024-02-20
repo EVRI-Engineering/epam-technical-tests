@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
@@ -45,9 +44,11 @@ public class CourierController {
     @PutMapping("/couriers/{courierId}")
     public ResponseEntity<Courier> updateCourierById(
             @PathVariable long courierId,
-            @RequestBody @Valid CourierRequestBody courierRequestBody
+
+            @Valid
+            @RequestBody
+            CourierRequestBody courierRequestBody
     ) {
         return ResponseEntity.ok(courierService.updateCourierById(courierId, courierRequestBody));
     }
-
 }
