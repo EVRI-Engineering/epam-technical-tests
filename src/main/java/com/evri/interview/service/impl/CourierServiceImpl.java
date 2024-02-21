@@ -32,7 +32,7 @@ public class CourierServiceImpl implements CourierService {
 
     @Override
     public List<Courier> getActiveCouriers() {
-        return repository.findAllByIsActive(true)
+        return repository.findAllByActive(true)
                 .stream()
                 .map(courierTransformer::toCourier)
                 .collect(Collectors.toList());
@@ -41,13 +41,18 @@ public class CourierServiceImpl implements CourierService {
     @Transactional
     @Override
     public Courier updateCourierById(Courier courierDto, Long id) {
+        log.info("Updating courier with ID: {}", id);
         return repository.findById(id).map(existingCourier -> {
             CourierEntity courierEntity = courierTransformer.toCourierEntity(courierDto);
             existingCourier.setActive(courierEntity.isActive());
             existingCourier.setFirstName(courierEntity.getFirstName());
             existingCourier.setLastName(courierEntity.getLastName());
             repository.save(existingCourier);
+            log.info("Successfully updated courier with ID: {}", id);
             return courierTransformer.toCourier(existingCourier);
-        }).orElseThrow(() -> new EntityNotFoundException(CourierEntity.class.getSimpleName(), id));
+        }).orElseThrow(() -> {
+            log.error("Courier with ID: {} not found", id);
+            return new EntityNotFoundException(CourierEntity.class.getSimpleName(), id);
+        });
     }
 }

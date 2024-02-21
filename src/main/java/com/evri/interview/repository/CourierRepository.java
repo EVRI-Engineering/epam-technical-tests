@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface CourierRepository extends JpaRepository<CourierEntity, Long> {
-    List<CourierEntity> findAllByIsActive(boolean isActive);
+    List<CourierEntity> findAllByActive(boolean active);
 }

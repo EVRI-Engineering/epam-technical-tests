@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CourierTransformer {
+    final int FIRST_CHARACTER_INDEX = 0;
+    final int OFFSET_AFTER_SPACE = 1;
+    final int NO_SPACE_FOUND = -1;
 
     public Courier toCourier(CourierEntity entity) {
         return Courier.builder()
@@ -21,9 +24,10 @@ public class CourierTransformer {
         String lastName = "";
         int spaceIndex = name.indexOf(" ");
 
-        if (spaceIndex != -1) {
-            firstName = name.substring(0, spaceIndex);
-            lastName = name.substring(spaceIndex + 1);
+        boolean hasSpace = spaceIndex != NO_SPACE_FOUND;
+        if (hasSpace) {
+            firstName = name.substring(FIRST_CHARACTER_INDEX, spaceIndex);
+            lastName = name.substring(spaceIndex + OFFSET_AFTER_SPACE);
         } else {
             firstName = name;
         }
