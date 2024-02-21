@@ -15,4 +15,24 @@ public class CourierTransformer {
                 .build();
     }
 
+    public CourierEntity toCourierEntity(Courier courier) {
+        String name = courier.getName();
+        String firstName = "";
+        String lastName = "";
+        int spaceIndex = name.indexOf(" ");
+
+        if (spaceIndex != -1) {
+            firstName = name.substring(0, spaceIndex);
+            lastName = name.substring(spaceIndex + 1);
+        } else {
+            firstName = name;
+        }
+
+        return CourierEntity.builder()
+                .id(courier.getId())
+                .firstName(firstName)
+                .lastName(lastName)
+                .active(courier.isActive())
+                .build();
+    }
 }
