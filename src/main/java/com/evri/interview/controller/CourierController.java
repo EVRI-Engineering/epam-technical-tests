@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Controller for managing {@link Courier} entities. This class handles API requests for retrieving
+ * and updating couriers within the application.
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
