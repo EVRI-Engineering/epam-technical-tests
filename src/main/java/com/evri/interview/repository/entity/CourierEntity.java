@@ -1,4 +1,4 @@
-package com.evri.interview.repository;
+package com.evri.interview.repository.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
