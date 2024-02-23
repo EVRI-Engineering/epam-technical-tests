@@ -19,7 +19,7 @@ public class CourierController {
     private CourierService courierService;
 
     @GetMapping()
-    public ResponseEntity<List<Courier>> getAllCouriers(@RequestParam(name = "isActive", required = false) boolean isActive) {
+    public ResponseEntity<List<Courier>> getAllCouriers(@RequestParam(name = "isActive", required = false, defaultValue = "false") boolean isActive) {
         return ResponseEntity.ok(courierService.getAllCouriers(isActive));
     }
 
