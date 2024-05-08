@@ -4,6 +4,9 @@ import com.evri.interview.model.Courier;
 import com.evri.interview.repository.CourierEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class CourierTransformer {
 
@@ -15,4 +18,9 @@ public class CourierTransformer {
                 .build();
     }
 
+    public List<Courier> toCouriers(List<CourierEntity> entities) {
+        return entities.stream()
+                .map(this::toCourier)
+                .collect(Collectors.toList());
+    }
 }
