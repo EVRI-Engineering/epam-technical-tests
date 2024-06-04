@@ -15,4 +15,11 @@ public class CourierTransformer {
                 .build();
     }
 
+    public void update(CourierEntity courierEntity, Courier courier) {
+        final String[] name = courier.getName().split(" ");
+
+        courierEntity.setFirstName(name[0]);
+        courierEntity.setLastName(name[1]);
+        courierEntity.setActive(courier.getActive());
+    }
 }
