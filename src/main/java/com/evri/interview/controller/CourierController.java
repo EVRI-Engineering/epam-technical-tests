@@ -3,11 +3,8 @@ package com.evri.interview.controller;
 import com.evri.interview.model.Courier;
 import com.evri.interview.model.constraints.UpdateRequest;
 import com.evri.interview.service.CourierService;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Validated
 @RestController
 @AllArgsConstructor
@@ -31,19 +26,16 @@ public class CourierController {
 
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   public ResponseEntity<List<Courier>> getAllCouriers(
-      @RequestParam(required = false) boolean isActive) {
-    if (isActive) {
-      return ResponseEntity.ok(courierService.getAllActiveCouriers());
-    }
-    return ResponseEntity.ok(courierService.getAllCouriers());
+      @RequestParam(required = false) Boolean isActive) {
+    return ResponseEntity.ok(courierService.getAllCouriers(isActive));
   }
 
   @PutMapping(
       value = "/{id}",
       consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<Courier> updateCourier(@PathVariable("id") @NotBlank final Long courierId,
+  public ResponseEntity<Courier> updateCourier(@PathVariable("id") Long id,
       @RequestBody @Validated(UpdateRequest.class) Courier courier) {
-    return ResponseEntity.ok(courierService.updateCourier(courierId, courier));
+    return ResponseEntity.ok(courierService.updateCourier(id, courier));
   }
 }

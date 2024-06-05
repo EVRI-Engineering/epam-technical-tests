@@ -34,7 +34,7 @@ public class CourierExceptionHandlers {
     Map<String, Object> map = new LinkedHashMap<>();
     map.put("title", e.getTitle());
     map.put("reason", e.getReason().toString());
-    map.put("detail", e.getMessage());
+    map.put("detail", e.getMessage() == null ? e.getStatus() : e.getMessage());
     return ResponseEntity.status(e.getStatus()).body(map);
   }
 

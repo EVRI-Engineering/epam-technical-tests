@@ -6,14 +6,13 @@ import com.evri.interview.exception.ExceptionTitle;
 import com.evri.interview.model.Courier;
 import com.evri.interview.repository.CourierEntity;
 import com.evri.interview.repository.CourierRepository;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,15 +22,31 @@ public class CourierService {
   private CourierRepository repository;
   private CourierTransformer courierTransformer;
 
-  public List<Courier> getAllCouriers() {
-    return repository.findAll()
-        .stream()
-        .map(courierTransformer::toCourier)
-        .collect(Collectors.toList());
-  }
+  public List<Courier> getAllCouriers(Boolean isActive) {
+    List<CourierEntity> couriers;
 
-  public List<Courier> getAllActiveCouriers() {
-    return repository.findByActiveTrue()
+    try {
+      if (Boolean.TRUE.equals(isActive)) {
+        couriers = repository.findByActiveTrue();
+      } else {
+        couriers = repository.findAll();
+      }
+    } catch (Exception ex) {
+      log.error("Unable to get couriers from database.", ex);
+
+      throw new CourierException(
+          ExceptionReason.INTERNAL_SERVICE_ERROR,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          ExceptionTitle.DATABASE_ERROR.getTitle());
+    }
+
+    if (couriers.isEmpty()) {
+      String msg =
+          Boolean.TRUE.equals(isActive) ? "No active couriers found." : "No couriers found.";
+      log.info(msg);
+    }
+
+    return couriers
         .stream()
         .map(courierTransformer::toCourier)
         .collect(Collectors.toList());
@@ -47,6 +62,11 @@ public class CourierService {
           ExceptionReason.COURIER_KEY_NOT_FOUND,
           HttpStatus.NOT_FOUND,
           ExceptionTitle.NOT_FOUND.getTitle());
+    }
+
+    Courier currentCourier = courierTransformer.toCourier(sourceCourier.get());
+    if (currentCourier.compareTo(courier) == 0) {
+      return currentCourier;
     }
 
     CourierEntity updatedCourier = updateAndSave(sourceCourier.get(), courier);

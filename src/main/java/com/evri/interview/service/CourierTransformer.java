@@ -7,19 +7,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class CourierTransformer {
 
-    public Courier toCourier(CourierEntity entity) {
-        return Courier.builder()
-                .id(entity.getId())
-                .name(String.format("%s %s", entity.getFirstName(), entity.getLastName()))
-                .active(entity.isActive())
-                .build();
-    }
+  private static final int SPACE_INDEX = ' ';
 
-    public void update(CourierEntity courierEntity, Courier courier) {
-        final String[] name = courier.getName().split(" ");
+  public Courier toCourier(CourierEntity entity) {
+    return Courier.builder()
+        .id(entity.getId())
+        .name(String.format("%s %s", entity.getFirstName(), entity.getLastName()))
+        .active(entity.isActive())
+        .build();
+  }
 
-        courierEntity.setFirstName(name[0]);
-        courierEntity.setLastName(name[1]);
-        courierEntity.setActive(courier.getActive());
-    }
+  public void update(CourierEntity courierEntity, Courier courier) {
+    String fullName = courier.getName();
+    int idx = fullName.lastIndexOf(SPACE_INDEX);
+
+    courierEntity.setFirstName(fullName.substring(0, idx));
+    courierEntity.setLastName(fullName.substring(idx + 1));
+    courierEntity.setActive(courier.getActive());
+  }
 }
