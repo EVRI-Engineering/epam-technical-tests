@@ -21,7 +21,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.evri.interview.model.Courier;
+import com.evri.interview.model.CourierUpdateDto;
 import com.evri.interview.service.CourierService;
+import com.evri.interview.service.CourierTransformer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,46 +33,48 @@ import lombok.extern.slf4j.Slf4j;
 class CourierControllerTest {
 
   public static final long COURIER_ID = 1L;
+  public static final String COURIER_NAME = "Test Courier";
   @Autowired
   private MockMvc mockMvc;
   @MockBean
   private CourierService courierService;
+  @MockBean
+  private CourierTransformer courierTransformer;
   @Autowired
   ObjectMapper objectMapper;
 
   @Test
   void shouldUpdateExistedCourier() throws Exception {
-    Courier courier = Courier.builder().id(COURIER_ID).name("Test Courier").active(true).build();
-    log.info(objectMapper.writeValueAsString(courier));
-
-    when(courierService.getCourierByID(anyLong())).thenReturn(Optional.of(courier));
+    Courier courier = Courier.builder().id(COURIER_ID).name(COURIER_NAME).active(true).build();
+    CourierUpdateDto courierDto = new CourierUpdateDto(COURIER_NAME, true);
+    when(courierService.updateCourier(anyLong(), any(CourierUpdateDto.class))).thenReturn(Optional.of(courier));
+    when(courierTransformer.fromDto(anyLong(), any(CourierUpdateDto.class))).thenReturn(courier);
 
     mockMvc.perform(put("/api/couriers/{courierId}", COURIER_ID)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(courier)))
+        .content(objectMapper.writeValueAsString(courierDto)))
       .andExpect(status().isOk());
 
-    verify(courierService).getCourierByID(courier.getId());
-    verify(courierService).saveCourier(courier);
+    verify(courierService).updateCourier(courier.getId(), courierDto);
   }
 
   @Test
   void shouldNotUpdateNotExistedCourier() throws Exception {
-    Courier courier = Courier.builder().id(COURIER_ID).name("Test Courier").active(true).build();
+    Courier courier = Courier.builder().id(COURIER_ID).name(COURIER_NAME).active(true).build();
+    CourierUpdateDto courierDto = new CourierUpdateDto(COURIER_NAME, true);
 
     when(courierService.getCourierByID(anyLong())).thenReturn(Optional.empty());
 
     mockMvc.perform(put("/api/couriers/{courierId}", COURIER_ID)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(courier)))
+        .content(objectMapper.writeValueAsString(courierDto)))
       .andExpect(status().isNotFound());
 
-    verify(courierService).getCourierByID(courier.getId());
-    verify(courierService, times(0)).saveCourier(any(Courier.class));
+    verify(courierService).updateCourier(courier.getId(), courierDto);
   }
 
   @Test
-  void shouldReturnOnlyActiveUsers() throws Exception {
+  void shouldReturnOnlyActiveCouriers() throws Exception {
     Courier courier = Courier.builder().id(20L).name("Full Name").active(true).build();
     when(courierService.getAllActiveCouriers()).thenReturn(List.of(courier));
 
@@ -82,4 +86,19 @@ class CourierControllerTest {
     verify(courierService).getAllActiveCouriers();
     verify(courierService, times(0)).getAllCouriers();
   }
+
+  @Test
+  void shouldReturnAllCouriers() throws Exception {
+    Courier courier = Courier.builder().id(20L).name("Full Name").active(false).build();
+    when(courierService.getAllCouriers()).thenReturn(List.of(courier));
+
+    mockMvc.perform(get("/api/couriers?isActive=false")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(content().json(objectMapper.writeValueAsString(List.of(courier))));
+
+    verify(courierService).getAllCouriers();
+    verify(courierService, times(0)).getAllActiveCouriers();
+  }
+
 }

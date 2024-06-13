@@ -3,9 +3,12 @@ package com.evri.interview.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.evri.interview.model.Courier;
+import com.evri.interview.model.CourierUpdateDto;
 import com.evri.interview.repository.CourierRepository;
 
 import lombok.AllArgsConstructor;
@@ -37,5 +40,15 @@ public class CourierService {
 
     public Courier saveCourier(final Courier courier) {
         return courierTransformer.toCourier(repository.save(courierTransformer.toCourierEntity(courier)));
+    }
+
+    @Transactional
+    public Optional<Courier> updateCourier(long courierId, CourierUpdateDto courierDto) {
+        final Optional<Courier> courier = getCourierByID(courierId);
+        if (courier.isEmpty()) {
+            return Optional.empty();
+        }
+        Courier updatedCourier = saveCourier(courierTransformer.fromDto(courierId, courierDto));
+        return Optional.of(updatedCourier);
     }
 }
