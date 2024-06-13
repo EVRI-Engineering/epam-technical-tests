@@ -17,6 +17,13 @@ public class CourierService {
     private CourierTransformer courierTransformer;
     private CourierRepository repository;
 
+    public List<Courier> getAllActiveCouriers() {
+        return repository.findAllByActiveTrue()
+          .stream()
+          .map(courierTransformer::toCourier)
+          .toList();
+    }
+
     public List<Courier> getAllCouriers() {
         return repository.findAll()
                 .stream()

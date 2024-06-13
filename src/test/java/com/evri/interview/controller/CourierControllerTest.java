@@ -5,9 +5,12 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -66,4 +69,17 @@ class CourierControllerTest {
     verify(courierService, times(0)).saveCourier(any(Courier.class));
   }
 
+  @Test
+  void shouldReturnOnlyActiveUsers() throws Exception {
+    Courier courier = Courier.builder().id(20L).name("Full Name").active(true).build();
+    when(courierService.getAllActiveCouriers()).thenReturn(List.of(courier));
+
+    mockMvc.perform(get("/api/couriers?isActive=true")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(content().json(objectMapper.writeValueAsString(List.of(courier))));
+
+    verify(courierService).getAllActiveCouriers();
+    verify(courierService, times(0)).getAllCouriers();
+  }
 }
