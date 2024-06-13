@@ -1,12 +1,14 @@
 package com.evri.interview.service;
 
-import com.evri.interview.model.Courier;
-import com.evri.interview.repository.CourierRepository;
-import lombok.AllArgsConstructor;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.evri.interview.model.Courier;
+import com.evri.interview.repository.CourierRepository;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +21,14 @@ public class CourierService {
         return repository.findAll()
                 .stream()
                 .map(courierTransformer::toCourier)
-                .collect(Collectors.toList());
+          .toList();
+    }
+
+    public Optional<Courier> getCourierByID(final long id) {
+        return repository.findById(id).map(entity -> courierTransformer.toCourier(entity));
+    }
+
+    public Courier saveCourier(final Courier courier) {
+        return courierTransformer.toCourier(repository.save(courierTransformer.toCourierEntity(courier)));
     }
 }
