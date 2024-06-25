@@ -1,9 +1,9 @@
 package com.evri.interview.repository;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Builder
+@Accessors(chain = true)
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Data
