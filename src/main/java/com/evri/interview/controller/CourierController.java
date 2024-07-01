@@ -6,6 +6,7 @@ import com.evri.interview.service.CourierService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,19 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/couriers")
 public class CourierController {
 
 	private CourierService courierService;
 
-	@GetMapping("/couriers")
+	@GetMapping
 	public ResponseEntity<List<Courier>> getAllCouriers(
-		@RequestParam(required = false, defaultValue = "false", name = "isActive") boolean filterByIsActive) {
-		return ResponseEntity.ok(courierService.getCouriers(filterByIsActive));
+		@RequestParam(required = false, defaultValue = "false") boolean isActive) {
+		return ResponseEntity.ok(courierService.getCouriers(isActive));
 	}
 
-	@PutMapping("/couriers/{id}")
-	public ResponseEntity<Courier> updateCourierIfExists(@PathVariable long id, @RequestBody CourierDto courierDto) {
+	@PutMapping("/{id}")
+	public ResponseEntity<Courier> updateCourierIfExists(@PathVariable long id,
+		@RequestBody @Validated CourierDto courierDto) {
 		return ResponseEntity.ok(courierService.updateCourierIfExists(id, courierDto));
 	}
 
