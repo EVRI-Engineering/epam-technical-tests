@@ -7,7 +7,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.evri.interview.TestUtils;
 import com.evri.interview.controller.dto.request.CourierDto;
 import com.evri.interview.exception.CourierNotFoundException;
 import com.evri.interview.mapper.CourierMapperImpl;
@@ -33,7 +32,7 @@ class CourierServiceUnitTest {
 	@Test
 	void getCouriers_filterByIsActiveIsRequired_onlyActiveCouriersReturned() {
 		//Given
-		doReturn(TestUtils.listOf(
+		doReturn(List.of(
 			CourierEntity.builder().id(1L).firstName("John").lastName("Carter").active(true).build(),
 			CourierEntity.builder().id(2L).firstName("Amy").lastName("Carter").active(true).build()
 		)).when(courierRepository).getAllByActiveIsTrue();
@@ -45,7 +44,7 @@ class CourierServiceUnitTest {
 
 		//Then
 		assertThat(couriers)
-			.containsExactlyInAnyOrderElementsOf(TestUtils.listOf(
+			.containsExactlyInAnyOrderElementsOf(List.of(
 				Courier.builder().id(1L).name("John Carter").active(true).build(),
 				Courier.builder().id(2L).name("Amy Carter").active(true).build()
 			));
@@ -56,7 +55,7 @@ class CourierServiceUnitTest {
 	@Test
 	void getCouriers_filterByIsActiveIsDisabled_allCouriersReturned() {
 		//Given
-		doReturn(TestUtils.listOf(
+		doReturn(List.of(
 			CourierEntity.builder().id(1L).firstName("John").lastName("Carter").active(true).build(),
 			CourierEntity.builder().id(2L).firstName("Amy").lastName("Carter").active(false).build()
 		)).when(courierRepository).findAll();
@@ -68,7 +67,7 @@ class CourierServiceUnitTest {
 
 		//Then
 		assertThat(couriers)
-			.containsExactlyInAnyOrderElementsOf(TestUtils.listOf(
+			.containsExactlyInAnyOrderElementsOf(List.of(
 				Courier.builder().id(1L).name("John Carter").active(true).build(),
 				Courier.builder().id(2L).name("Amy Carter").active(false).build()
 			));

@@ -7,7 +7,6 @@ import com.evri.interview.model.Courier;
 import com.evri.interview.repository.CourierEntity;
 import com.evri.interview.repository.CourierRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,13 +36,13 @@ public class CourierService {
 		return repository.getAllByActiveIsTrue()
 			.stream()
 			.map(courierMapper::entityToModel)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	private List<Courier> getAllCouriers() {
 		return repository.findAll()
 			.stream()
 			.map(courierMapper::entityToModel)
-			.collect(Collectors.toList());
+			.toList();
 	}
 }

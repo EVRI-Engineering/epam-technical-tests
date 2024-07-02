@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ServiceControllerAdvice {
 
 	@ExceptionHandler(CourierNotFoundException.class)
-	public ResponseEntity<String> handleCourierNotFoundException(CourierNotFoundException exception) {
-		log.error("Courier not found", exception);
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+	public ResponseEntity<String> handleCourierNotFoundException(CourierNotFoundException e) {
+		log.error("Courier not found", e);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
