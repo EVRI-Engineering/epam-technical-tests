@@ -1,0 +1,23 @@
+
+### isActive=false
+GET http://localhost:9000/api/couriers?isActive=false
+
+
+### isActive=true
+GET http://localhost:9000/api/couriers?isActive=true
+
+
+### isActive=null
+GET http://localhost:9000/api/couriers
+
+
+
+###
+PUT http://localhost:9001/api/couriers/15
+Content-Type: application/json
+
+{
+  "id": 15,
+  "name": "Andrew Walkerercercre",
+  "active": true
+}
