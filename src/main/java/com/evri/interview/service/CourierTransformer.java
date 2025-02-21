@@ -1,5 +1,6 @@
 package com.evri.interview.service;
 
+import com.evri.interview.dto.CourierDto;
 import com.evri.interview.model.Courier;
 import com.evri.interview.repository.CourierEntity;
 import org.springframework.stereotype.Component;
@@ -15,4 +16,9 @@ public class CourierTransformer {
                 .build();
     }
 
+    public void updateCourierEntity(CourierEntity entity, CourierDto courierDto) {
+        entity.setFirstName(courierDto.getFirstName());
+        entity.setLastName(courierDto.getLastName());
+        entity.setActive(courierDto.isActive());
+    }
 }
