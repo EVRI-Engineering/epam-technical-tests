@@ -11,6 +11,7 @@ import com.evri.interview.model.Courier;
 import com.evri.interview.repository.CourierEntity;
 import com.evri.interview.repository.CourierRepository;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,9 @@ class CourierServiceTest {
 
   @Test
   public void getAllCouriers_ReturnsOnlyActiveCouriers() {
-    List<CourierEntity> entities = Arrays.asList(
-        CourierEntity.builder().id(1L).firstName("Ben").lastName("Askew").active(true).build(),
-        CourierEntity.builder().id(2L).firstName("John").lastName("Doe").active(false).build());
-    when(repository.findAll()).thenReturn(entities);
+    List<CourierEntity> entities = Collections.singletonList(
+        CourierEntity.builder().id(1L).firstName("Ben").lastName("Askew").active(true).build());
+    when(repository.findByActive(true)).thenReturn(entities);
     when(courierTransformer.toCourier(any())).thenAnswer(invocationOnMock -> {
       CourierEntity entity = invocationOnMock.getArgument(0);
       return Courier.builder()

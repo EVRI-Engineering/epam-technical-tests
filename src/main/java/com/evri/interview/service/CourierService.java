@@ -1,6 +1,7 @@
 package com.evri.interview.service;
 
 import com.evri.interview.model.Courier;
+import com.evri.interview.repository.CourierEntity;
 import com.evri.interview.repository.CourierRepository;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +18,10 @@ public class CourierService {
     private CourierRepository repository;
 
     public List<Courier> getAllCouriers(boolean isActive) {
-    return repository.findAll().stream()
-        .filter(courierEntity -> !isActive || courierEntity.isActive())
+      List<CourierEntity> courierEntities = isActive ? repository.findByActive(isActive) :
+          repository.findAll();
+      return courierEntities
+        .stream()
         .map(courierTransformer::toCourier)
         .collect(Collectors.toList());
     }
